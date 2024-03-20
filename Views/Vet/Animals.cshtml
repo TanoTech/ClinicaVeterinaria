@@ -1,0 +1,99 @@
+@using BW5.Models;
+@model AnimalsViewModel
+@{
+    ViewBag.Title = "Animals";
+    var animals = ViewBag.Animals as List<Animal>;
+}
+
+
+<h2>Animals</h2>
+
+@if (TempData["error"] != null)
+{
+    <p>@TempData["error"]</p>
+}
+@Html.ActionLink("Monthly", "Mensili", "Vet")
+<table class="table">
+    <thead>
+
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Tipologia</th>
+            <th scope="col">Colore</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Data Registrazione</th>
+            <th scope="col">Data di Nascita</th>
+            <th scope="col">Presunta?</th>
+            <th scope="col">Nome Proprietario</th>
+            <th scope="col">Cognome Proprietario</th>
+            <th scope="col">Telefono Proprietario</th>
+            <th scope="col">Microchip</th>
+            <th scope="col">Controlli</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < animals.Count(); i++)
+        {
+            <tr>
+
+                <th scope="row">@animals[i].id</th>
+                <td>@animals[i].Name</td>
+                <td>@animals[i].Tipologia</td>
+                <td>@animals[i].Colore</td>
+                <td><img style="width: 100px; height: 100px; object-fit: cover;" src="@animals[i].Foto" alt="@animals[i].Name" /></td>
+                <td>@animals[i].DataReg.ToShortDateString()</td>
+                <td>@animals[i].DataNascita.ToShortDateString()</td>
+                <td>@animals[i].Presunta</td>
+                <td>@animals[i].NomeProprietario</td>
+                <td>@animals[i].CognomeProprietario</td>
+                <td>@animals[i].TelefonoProprietario</td>
+                <td>@animals[i].IdMicrochip</td>
+                <td>
+                    @using (Html.BeginForm("Ricovero", "Vet", new { animalId = animals[i].id }, FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal(@animals[i].id)">
+                            Ricovero
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="Modal(@animals[i].id)" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5">Modal title</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        @Html.HiddenFor(m => m.admission.animalID)
+
+                                        @Html.LabelFor(m => m.admission.DataInizio, new { htmlAttributes = new { @class = "form-label" } })
+                                        @Html.EditorFor(m => m.admission.DataInizio, new { htmlAttributes = new { @class = "form-control", @max = $"{@DateTime.Now.ToString("yyyy-MM-dd")}" } })
+
+                                        @Html.LabelFor(m => m.admission.DataFine, new { htmlAttributes = new { @class = "form-label" } })
+                                        @Html.EditorFor(m => m.admission.DataFine, new { htmlAttributes = new { @class = "form-control", @max = $"{@DateTime.Now.ToString("yyyy-MM-dd")}" } })
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Conferma ricovero</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@section scripts {
+    <script type="text/javascript">
+    </script>
+}

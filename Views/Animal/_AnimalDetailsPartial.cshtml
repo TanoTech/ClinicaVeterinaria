@@ -1,0 +1,10 @@
+﻿﻿@model BW5.Models.Animal
+
+<h4>Dettagli dell'animale:</h4>
+<ul>
+    <li>Nome: @Model.Name</li>
+    <li>Tipologia: @Model.Tipologia</li>
+    <li>Colore: @Model.Colore</li>
+    <li>Data di nascita: @Model.DataNascita.ToShortDateString()</li>
+    <li>Nome del proprietario: @Model.NomeProprietario</li>
+</ul>
