@@ -16,8 +16,6 @@ namespace BW5.Models
         public string Tipologia { get; set; }
         public int Quantità { get; set; }
 
-        [ForeignKey("CompanyId")]
-        public int CompanyId { get; set; }
         public Company Company { get; set; }
     }
 }
